@@ -147,11 +147,12 @@ function DrawTPSChart(response, someDiv) {
 
     var options = {
         series: {
+            color: 1,
 	    lines: { show: true, fill: true },
 	    //bars: { show: true, barWidth : 60*1000, fill: true},
 	    points: { show: false }
         },
-        xaxis: { mode: "time", timezone: "browser", minTickSize: [10, "second"], ticks: 4 },
+        xaxis: { mode: "time", timezone: "browser", minTickSize: [30, "second"], ticks: 4 },
         yaxis: { position: "right" },
         legend: { position: 'nw' }
     };

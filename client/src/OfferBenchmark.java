@@ -14,7 +14,8 @@ public class OfferBenchmark extends BaseBenchmark {
     private String[] acct_states;
     private int[] amounts = {25,50,75,100,150,200,250,300};
     private PersonGenerator gen = new PersonGenerator();
-
+	private String[] offers = {"$5 off any purchase over $25","20% off any purchase over $50","Extra 25% off sale items"};
+	
     // constructor
     public OfferBenchmark(BenchmarkConfig config) {
         super(config);
@@ -85,7 +86,7 @@ public class OfferBenchmark extends BaseBenchmark {
                                  rand.nextInt(5)+1,
                                  (double)rand.nextInt(100),
                                  0,
-                                 "Coupon for $5 off any purchase over $25"
+                                 offers[rand.nextInt(offers.length)]
                                  );
         }
     }

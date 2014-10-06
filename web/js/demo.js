@@ -7,32 +7,12 @@
 // schedule refresh functions to run periodically
 function RefreshData(){
 
-    // con.BeginExecute('nbbo_last_ask_symbol', 
-    //                  [symbol], 
-    //                  function(response) {
-    //                      DrawNBBOTable(response,'#table_nbbo_ask')}
-    //                 );
+    con.BeginExecute('RecentOffersList',
+                     [],
+                     function(response) {
+                         DrawTable(response,'#offers_table')}
+                    );
 
-    // con.BeginExecute('nbbo_last_bid_symbol', 
-    //                  [symbol], 
-    //                  function(response) {
-    //                      DrawNBBOTable(response,'#table_nbbo_bid')}
-    //                 );
-
-    // con.BeginExecute('last_bids_symbol', 
-    //                  [symbol], 
-    //                  function(response) {
-    //                      DrawNBBOTable(response,'#table_last_bids');
-    //                  }
-    //                 );
-
-    // con.BeginExecute('last_asks_symbol', 
-    //                  [symbol], 
-    //                  function(response) {
-    //                      DrawNBBOTable(response,'#table_last_asks');
-    //                  }
-    //                 );
-    
     con.BeginExecute('recent_offer_totals',
                      [],
                      function(response) { 
@@ -79,11 +59,12 @@ function DrawTimeLinesChart(response, placeholder) {
 
     var options = {
         series: {
+            color: 3,
 	    lines: { show: true, fill: false },
 	    //bars: { show: true, barWidth : 60*1000, fill: true},
 	    points: { show: false }
         },
-        xaxis: { mode: "time", timezone: "browser", minTickSize: [20, "second"], ticks: 10 },
+        xaxis: { mode: "time", timezone: "browser", minTickSize: [30, "second"], ticks: 10 },
         yaxis: { position: "right" },
         legend: { position: 'nw' }
     };

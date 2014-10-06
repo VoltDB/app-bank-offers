@@ -162,3 +162,10 @@ SELECT * FROM total_offers ORDER BY offer_ts DESC LIMIT 60;
 
 CREATE PROCEDURE FROM CLASS procedures.CheckForOffers;
 PARTITION PROCEDURE CheckForOffers ON TABLE transaction COLUMN acc_no PARAMETER 1;
+
+CREATE PROCEDURE RecentOffersList AS
+SELECT og.offer_ts, og.offer_text, avt.acc_no, avt.vendor_id, avt.total_visits, avt.total_spend
+FROM offers_given og
+INNER JOIN acct_vendor_totals avt on avt.acc_no = og.acc_no AND avt.vendor_id = og.vendor_id
+ORDER BY og.offer_ts desc
+LIMIT 10;
