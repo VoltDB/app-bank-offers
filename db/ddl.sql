@@ -62,7 +62,7 @@ CREATE TABLE account(
 );
 PARTITION TABLE account ON COLUMN acc_no;
 
-CREATE TABLE transaction(
+CREATE TABLE activity(
   txn_id BIGINT NOT NULL,
   acc_no BIGINT  NOT NULL,
   txn_amt FLOAT NOT NULL,
@@ -72,9 +72,7 @@ CREATE TABLE transaction(
   vendor_id INTEGER,
   PRIMARY KEY (acc_no, txn_ts, txn_id)
 );
-PARTITION TABLE transaction ON COLUMN acc_no;
-
---CREATE INDEX idx_transaction ON transaction (acc_no, txn_dt);
+PARTITION TABLE activity ON COLUMN acc_no;
 
 CREATE TABLE offers_given(
   acc_no BIGINT NOT NULL,
@@ -103,7 +101,7 @@ SELECT
   vendor_id,
   COUNT(*) as total_visits,
   SUM(txn_amt) as total_spend
-FROM transaction
+FROM activity
 GROUP BY acc_no, vendor_id;
 
 
@@ -118,7 +116,7 @@ CREATE PROCEDURE recent_offer_totals AS
 SELECT * FROM total_offers ORDER BY offer_ts DESC LIMIT 60;
 
 CREATE PROCEDURE FROM CLASS procedures.CheckForOffers;
-PARTITION PROCEDURE CheckForOffers ON TABLE transaction COLUMN acc_no PARAMETER 1;
+PARTITION PROCEDURE CheckForOffers ON TABLE activity COLUMN acc_no PARAMETER 1;
 
 CREATE PROCEDURE RecentOffersList AS
 SELECT og.offer_ts, c.cust_first_name, c.cust_last_name, og.offer_text, avt.acc_no, avt.vendor_id, avt.total_visits, avt.total_spend

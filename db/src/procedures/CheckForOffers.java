@@ -13,8 +13,8 @@ import java.util.*;
 public class CheckForOffers extends VoltProcedure {
 
 
-	public final SQLStmt insertTxn = new SQLStmt(
-		"INSERT INTO TRANSACTION VALUES ( ?,?,?,?,?,?,?);");
+	public final SQLStmt insertActivity = new SQLStmt(
+		"INSERT INTO activity VALUES ( ?,?,?,?,?,?,?);");
 
     public final SQLStmt checkCustState = new SQLStmt(
         "SELECT c.cust_state "+
@@ -38,8 +38,8 @@ public class CheckForOffers extends VoltProcedure {
 	public final SQLStmt insertOffer = new SQLStmt(
 		"INSERT INTO offers_given VALUES (?,?,NOW,?);");
 
-	// public final SQLStmt insertOfferExport = new SQLStmt(
-	// 	"INSERT INTO offers_given_exp VALUES (?,?,NOW,?);");
+	public final SQLStmt insertOfferExport = new SQLStmt(
+	 	"INSERT INTO offers_given_exp VALUES (?,?,NOW,?);");
 
 
 
@@ -53,8 +53,8 @@ public class CheckForOffers extends VoltProcedure {
 		throws VoltAbortException {
 
 		
-		// insert transaction
-		voltQueueSQL(insertTxn,txnId,acctNo,txnAmt,txnState,txnCity,txnTimestamp,vendorId);
+		// insert activity
+		voltQueueSQL(insertActivity,txnId,acctNo,txnAmt,txnState,txnCity,txnTimestamp,vendorId);
 
 		// get vendor offers
 		voltQueueSQL(getVendorOffers,acctNo,vendorId);
@@ -65,7 +65,7 @@ public class CheckForOffers extends VoltProcedure {
 	        results0[1].advanceRow();
 	        String offerText = results0[1].getString(0);
 	        voltQueueSQL(insertOffer,acctNo,vendorId,offerText);
-	        //voltQueueSQL(insertOfferExport,acctNo,vendorId,offerText);
+	        voltQueueSQL(insertOfferExport,acctNo,vendorId,offerText);
 	        voltExecuteSQL();
         } 
         
