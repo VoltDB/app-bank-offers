@@ -16,6 +16,11 @@ VOLTDB_HOME=$(dirname $(dirname "$(which voltdb)"))
 
 LICENSE="$VOLTDB_HOME/voltdb/license.xml"
 
+# Get the PID from PIDFILE if we don't have one yet.
+if [[ -z "${PID}" && -e web/http.pid ]]; then
+  PID=$(cat web/http.pid);
+fi
+
 # remove non-source files
 function clean() {
     rm -rf voltdbroot statement-plans log catalog-report.html
@@ -25,25 +30,24 @@ function clean() {
 }
 
 function start_web() {
-    if curl --output /dev/null --silent --head --fail "http://localhost:$WEB_PORT"
-    then
-        echo "web server already running on port $WEB_PORT"
-    else
-        echo "starting web server on port $WEB_PORT"
+    if [[ -z "${PID}" ]]; then
         cd web
         nohup python -m SimpleHTTPServer $WEB_PORT > http.log 2>&1 &
+        echo $! > http.pid
+        cd ..
+        echo "started http server"
+    else
+        echo "http server is already running (PID: ${PID})"
     fi
-
 }
-
 function stop_web() {
-
-    if curl --output /dev/null --silent --head --fail "http://localhost:$WEB_PORT"
-    then
-        echo "Stopping web server running on port $WEB_PORT"
-        kill $(ps | grep "python -m SimpleHTTPServer 8081" | head -n 1 | awk '{print $1}')
-    fi
-
+  if [[ -z "${PID}" ]]; then
+    echo "http server is not running (missing PID)."
+  else
+      kill ${PID}
+      rm web/http.pid
+      echo "stopped http server (PID: ${PID})."
+  fi
 }
 
 # compile any java stored procedures
@@ -153,7 +157,7 @@ function stop() {
 }
 
 function help() {
-    echo "Usage: ./run.sh {clean|catalog|server}"
+    echo "Usage: ./run.sh {clean|compile|catalog|start_web|stop_web|server|cluster_server|client}"
 }
 
 # Run the target passed as the first arg on the command line
