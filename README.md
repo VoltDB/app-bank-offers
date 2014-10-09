@@ -122,7 +122,7 @@ Instructions for exporting to CSV
 ---------------------------------
 1. Edit the deployment.xml file to add the following.  For an example, see the provided deployment-export-csv.xml file.
 
-```
+```xml
 <export enabled="true" target="file">  
  <configuration>  
   <property name="type">csv</property>  
@@ -138,7 +138,7 @@ Instructions for exporting to Hadoop
 ------------------------------------
 1. Edit the deployment.xml file to add the following.  For an example, see the provided deployment-export-hadoop.xml file.
 
-```
+```xml
 <export enabled="true" target="http">
  <configuration>
   <property name="endpoint">http://myhadoopsvr/webhdfs/v1.0/%t/data%p.%t.csv</property>
