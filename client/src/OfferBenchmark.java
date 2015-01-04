@@ -1,3 +1,26 @@
+/* This file is part of VoltDB.
+ * Copyright (C) 2008-2015 VoltDB Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package client;
 
 import java.io.*;
@@ -15,7 +38,7 @@ public class OfferBenchmark extends BaseBenchmark {
     private int[] amounts = {25,50,75,100,150,200,250,300};
     private PersonGenerator gen = new PersonGenerator();
 	private String[] offers = {"$5 off any purchase over $25","20% off any purchase over $50","Extra 25% off sale items"};
-	
+
     // constructor
     public OfferBenchmark(BenchmarkConfig config) {
         super(config);
@@ -37,7 +60,7 @@ public class OfferBenchmark extends BaseBenchmark {
 
             PersonGenerator.Person p = gen.newPerson();
             //int ac = rand.nextInt(areaCodes.length);
-            
+
             client.callProcedure(new BenchmarkCallback("CUSTOMER.insert"),
                                  "CUSTOMER.insert",
                                  c,
@@ -52,7 +75,7 @@ public class OfferBenchmark extends BaseBenchmark {
 
             int accts = rand.nextInt(5);
             for (int a=0; a<accts; a++) {
-                
+
                 int acct_no = (c*100)+a;
                 client.callProcedure(new BenchmarkCallback("ACCOUNT.insert"),
                                      "ACCOUNT.insert",
@@ -67,7 +90,7 @@ public class OfferBenchmark extends BaseBenchmark {
                 stList.add(p.state);
             }
         }
-        
+
         accounts = acctList.toArray(new Long[acctList.size()]);
         acct_states = stList.toArray(new String[stList.size()]);
 
@@ -116,7 +139,7 @@ public class OfferBenchmark extends BaseBenchmark {
 
     public static void main(String[] args) throws Exception {
         BenchmarkConfig config = BenchmarkConfig.getConfig("OfferBenchmark",args);
-        
+
         BaseBenchmark c = new OfferBenchmark(config);
         c.runBenchmark();
     }
