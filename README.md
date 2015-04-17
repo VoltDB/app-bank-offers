@@ -136,16 +136,28 @@ Instructions for exporting to CSV
 
 Instructions for exporting to Hadoop
 ------------------------------------
-1. Edit the deployment.xml file to add the following.  For an example, see the provided deployment-export-hadoop.xml file.
+1. Edit the deployment.xml file to add the following.  See the provided deployment-export-hortonworks.xml and deployment-export-cloudera.xml files.
 
 ```xml
-<export enabled="true" target="http">
- <configuration>
-  <property name="endpoint">http://myhadoopsvr/webhdfs/v1.0/%t/data%p.%t.csv</property>
-  <property name="batch.mode">true</property>
-  <property name="period">120</property>
- </configuration>
-</export>
+  <export enabled="true" target="http">
+    <configuration>
+      <property name="endpoint">http://sandbox.hortonworks.com:50070/webhdfs/v1/%t/data%p-%g.%t.csv</property>
+      <property name="type">csv</property>
+      <property name="batch.mode">true</properoty>
+      <property name="period">120</property>
+    </configuration>
+  </export>
+```
+
+or 
+
+```xml
+  <export enabled="true" target="http">
+     <configuration>
+       <property name="endpoint">http://quickstart.cloudera:50070/webhdfs/v1/user/cloudera/%t/data%p-%g.%t.csv?user.name=cloudera</property>
+       <property name="type">csv</property>
+     </configuration>
+   </export>
 ```
 
 

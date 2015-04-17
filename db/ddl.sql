@@ -83,7 +83,7 @@ CREATE TABLE offers_given(
 PARTITION TABLE offers_given ON COLUMN acc_no;
 CREATE INDEX idx_offers_given ON offers_given (offer_ts);
 
--- this table is for exporting to Hadoop
+-- this table is for exporting a copy of the offers
 CREATE TABLE offers_given_exp(
   acc_no BIGINT NOT NULL,
   vendor_id INTEGER,
